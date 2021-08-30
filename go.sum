@@ -1,0 +1,4 @@
+github.com/doctordesh/check v0.0.0-20200914125451-e201dda22edb h1:/JChLi4aFg8lH8ZrRKnAV2ogLXb1Ranxq9vAFIESwGU=
+github.com/doctordesh/check v0.0.0-20200914125451-e201dda22edb/go.mod h1:HqxXIvjidtAWHZvZjU9w/Kivn2nHfHeG0zWip3UvBEg=
+gitlab.com/MaxIV/lib-maxiv-go-check v1.0.1 h1:8TB7kULIreXSxgIn8NGEb4LPFd5FSuqfT7B49YW8U7E=
+gitlab.com/MaxIV/lib-maxiv-go-check v1.0.1/go.mod h1:NGq0vuaboc6CGKAeqpmRqzA5+GSoKiaxfg4BG1iob8A=

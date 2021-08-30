@@ -1,0 +1,32 @@
+#+TITLE: YRM - YAML ReMade
+#+AUTHOR: Emil Rosendahl
+#+EMAIL: emil.o.rosendahl@gmail.com
+
+/This is a learning project, it's not suitable for any level of production/ use!
+
+* How to use it
+
+#+BEGIN_SRC go
+import "github.com/doctordesh/yrm"
+
+...
+
+var err error
+var m map[string]interface{}
+
+m, err = yrm.ParseFile("config.yrm")
+m, err = yrm.Parse(`a_string: 5\nwith: "values"`)
+// if err
+m["a_string"] == 5    // true
+m["with"] == "values" // true
+#+END_SRC
+
+
+* Background
+
+I wanted to understand how lexers and parser worked. Instead of taking on the
+huge project it is to create a programming language, I tried to come up with
+other things that also needs a reasoable level of parsing. A custom data format
+came to mind. YAML is the (syntactically) simplest one I found and I just
+thought that maybe I can re-implement some of the features as a proper lexer and
+parser.
