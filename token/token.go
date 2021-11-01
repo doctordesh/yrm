@@ -18,7 +18,6 @@ const (
 
 	// Special characters
 	COLON_SIGN TokenType = "COLON_SIGN"
-	AT_SIGN    TokenType = "AT_SIGN"
 	NEW_LINE   TokenType = "NEW_LINE"
 	TAB        TokenType = "TAB"
 	COMMENT    TokenType = "COMMENT"

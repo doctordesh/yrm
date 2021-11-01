@@ -1,0 +1,120 @@
+#+TITLE: YRM - Presentation
+#+AUTHOR: Emil Rosendahl
+#+EMAIL: emil.o.rosendahl@gmail.com
+
+* What is YRM?
+/Yaml Re-Made/
+
+- A textual data format
+- Looks very much like YAML
+- Supports primitive values (int, float, string, bool)
+- Supports nested objects/dicts/maps
+- Does not support lists/arrays
+
+#+BEGIN_SRC yaml
+// a comment
+host: "localhost"
+ports:
+      http: 8888
+      grpc: 9999
+startup_delay: 5.5
+env: "production"
+verbose: true
+#+END_SRC
+
+* Lexical analysis
+/... or lexing, tokenization/
+
+- Translates text into tokens
+- Tokens are chunks of text that has meaning in the 'language'
+  - Identifier
+  - Tab
+  - New line
+  - Colon
+  - Integer/float/string/bool
+  - End Of File
+
+#+BEGIN_SRC yaml
+host: "localhost"
+ports:
+      http: 80
+#+END_SRC
+
+#+BEGIN_SRC tokens
+IDENTIFIER("host")
+COLON_SIGN
+STRING("localhost")
+NEW_LINE
+IDENTIFIER("ports")
+COLON_SIGN
+NEW_LINE
+TAB
+IDENTIFIER("http")
+COLON_SIGN
+INT("80")
+EOF
+#+END_SRC
+
+* A state machine
+
+#+BEGIN_SRC quote
+... can be in exactly one of a finite number of states ..
+... can transition from one state to another in response to some input ...
+
+- Wikipedia
+#+END_SRC
+
+** Definition
+- List of states
+- Initial state
+- Input that triggers transitions
+
+* YRM Lexer
+|----------------+------------------+------------|
+| Original State | Trigger          | New State  |
+|----------------+------------------+------------|
+| NewLine        | "/"              | Comment    |
+| NewLine        | "[a-zA-Z_]"      | Identifier |
+| NewLine        | "\n"             | NewLine    |
+| Comment        | "\n"             | NewLine    |
+| Identifier     | ":"              | Colon      |
+| Colon          | ""               | Value      |
+| Value          | "\n"             | NewLine    |
+| Value          | "[0-9]"          | Number     |
+| Value          | "\""             | String     |
+| Value          | "t" or "f"       | Bool       |
+| Number         | NOT [0-9] or "." | Value      |
+| String         | "\""             | Value      |
+| Bool           | true or false    | Value      |
+|----------------+------------------+------------|
+
+Initial state: =NewLine=
+
+#+BEGIN_SRC yaml
+// a comment
+host: "localhost"
+ports:
+      http: 8888
+      grpc: 9999
+startup_delay: 5.5
+env: "production"
+verbose: true
+#+END_SRC
+
+* YRM Parser
+/Parses tokens, not text/
+
+- Makes sure that grammar is correct
+- Translates strings to values
+  - "5"         -> Integer
+  - "5.5"       -> Float
+  - "true"      -> Bool
+  - "\"lorem\"" -> String
+- Constructs a dict/map with key-value pairs
+- Recursive
+
+* What have I learned?
+- Using a state machine as a lexer (quite original) has a nice structure to it
+  and it creates good separation of the differrent parts.
+- Parsing for even very few and simple rules are quite tricky.
+- Mad respect for programming language creators
