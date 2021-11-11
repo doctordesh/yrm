@@ -37,8 +37,6 @@ func (self Token) String() string {
 		return string(self.TokenType)
 	case COLON_SIGN:
 		return string(self.TokenType)
-	case AT_SIGN:
-		return string(self.TokenType)
 	case NEW_LINE:
 		return string(self.TokenType)
 	case TAB:

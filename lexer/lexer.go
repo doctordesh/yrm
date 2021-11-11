@@ -141,7 +141,7 @@ func (self *lexer) acceptRun(valid string) {
 // errorf returns an error token and terminates the scan by passing
 // back a nil pointer that will be the next state, terminating l.nextItem.
 func (self *lexer) errorf(format string, args ...interface{}) stateFn {
-	tok := token.Token{token.ILLEGAL, format}
+	tok := token.Token{token.ILLEGAL, fmt.Sprintf(format, args...)}
 	self.tokens = append(self.tokens, tok)
 	return nil
 }
@@ -305,6 +305,7 @@ func lexValue(l *lexer) stateFn {
 		return lexString
 	case b == 't' || b == 'f':
 		// boolean
+		return lexBool
 	case b == '\n':
 		return lexNewLine
 	case b == eof:
@@ -312,7 +313,47 @@ func lexValue(l *lexer) stateFn {
 		return nil
 	}
 
-	panic(fmt.Sprintf("should never end up here. What happened? Value: %s", byteToString(l.current())))
+	return l.errorf("unknown identifier '%s'", []byte{l.current()})
+}
+
+func lexBool(l *lexer) stateFn {
+
+	// true
+	if l.current() == 't' {
+		if l.accept("r") == false {
+			return l.errorf("invalid boolean value (expected 'true')")
+		}
+		if l.accept("u") == false {
+			return l.errorf("invalid boolean value (expected 'true')")
+		}
+		if l.accept("e") == false {
+			return l.errorf("invalid boolean value (expected 'true')")
+		}
+
+		l.next()
+		l.emit(token.BOOL)
+		return lexValue
+	}
+
+	if l.current() == 'f' {
+		if l.accept("a") == false {
+			return l.errorf("invalid boolean value (expected 'false')")
+		}
+		if l.accept("l") == false {
+			return l.errorf("invalid boolean value (expected 'false')")
+		}
+		if l.accept("s") == false {
+			return l.errorf("invalid boolean value (expected 'false')")
+		}
+		if l.accept("e") == false {
+			return l.errorf("invalid boolean value (expected 'false')")
+		}
+
+		l.next()
+		l.emit(token.BOOL)
+		return lexValue
+	}
+	return nil
 }
 
 func lexString(l *lexer) stateFn {

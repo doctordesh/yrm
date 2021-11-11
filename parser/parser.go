@@ -139,7 +139,8 @@ func (self *parser) parse(depth int) (map[string]interface{}, error) {
 				return v, err
 			}
 		} else {
-			panic(self.current())
+			c := self.current()
+			return nil, fmt.Errorf("parse error: %s, %s", c.TokenType, c.Literal)
 		}
 	}
 
