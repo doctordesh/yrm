@@ -115,7 +115,9 @@ verbose: true
 - Recursive
 
 * What have I learned?
-- Using a state machine as a lexer (quite original) has a nice structure to it
-  and it creates good separation of the differrent parts.
-- Parsing for even very few and simple rules are quite tricky.
+- How to build a lexer (as a state machine)
+  - It's a quite original idea. "Most" lexer tutorials does not do it this way
+  - Very cool implementation idea, gives good separation between all "types" of
+    data that is being analyzed
+- Lexing and/or parsing for even very few and simple rules are quite tricky.
 - Mad respect for programming language creators

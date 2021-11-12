@@ -16,30 +16,17 @@ ports:
 startup_delay: 5.5
 env: "production"
 verbose: true
-lorem: false
-l:
-	t: true
-	b:
-		c: false
-	a: a
+production: false
 `
 
 func main() {
-	// res, err := yrm.ParseFile("config.yrm")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
 	res, err := yrm.Parse(input)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
 	}
 
-	b, err := json.MarshalIndent(res, "", "    ")
-	if err != nil {
-		panic(err)
-	}
+	b, _ := json.MarshalIndent(res, "", "    ")
 
 	fmt.Printf("%s\n", b)
 }
